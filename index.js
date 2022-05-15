@@ -10,6 +10,7 @@ app.use(express.json());
 
 //routes
 app.use(require("./routes/users"));
+app.use(require("./routes/files"));
 // app.use(require("./routes/blog"));
 require("dotenv").config();
 
