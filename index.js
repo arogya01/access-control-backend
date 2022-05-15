@@ -14,7 +14,7 @@ app.use(require("./routes/files"));
 // app.use(require("./routes/blog"));
 require("dotenv").config();
 
-console.log(process.env.REFRESH_TOKEN);
+// console.log(process.env.REFRESH_TOKEN);
 
 (async () => {
   await dbConnect.main();
