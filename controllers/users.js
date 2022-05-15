@@ -7,19 +7,20 @@ module.exports.createUser = async function createUser(newUser, res) {
   const ifUserExists = await client
     .db("access")
     .collection("users")
-    .find({ email: newUser.email });
+    .findOne({ email: newUser.email });
+
   console.log(ifUserExists);
 
-  // if (ifUserExists) {
-  //   res.status(409).send({ userExists: true });
-  // }
-
-  const result = await client
-    .db("access")
-    .collection("users")
-    .insertOne(newUser);
-  console.log(`New User Created with the following id: ${result}`);
-  res.status(200).send({ message: "user registered" });
+  if (ifUserExists) {
+    res.status(409).send({ userExists: true });
+  } else {
+    const result = await client
+      .db("access")
+      .collection("users")
+      .insertOne(newUser);
+    console.log(`New User Created with the following id: ${result}`);
+    res.status(200).send({ message: "user registered" });
+  }
 };
 
 module.exports.findUser = async function findUser(user) {
