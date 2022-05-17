@@ -11,7 +11,6 @@ const { createUser, findUser, generateAccessToken, generateRefreshToken } =
 
 let refreshTokens = [];
 
-
 router.post("/signup", async (req, res) => {
   const saltRounds = 10;
 
@@ -36,13 +35,13 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-   
-  console.dir(email,password);
+
+  console.dir(email, password);
   if (!email || !password) {
     res.status(422).send({ error: "please add email or password" });
     res.end();
   }
- 
+
   const userInfo = await userControllers.findUser({ email: email });
 
   if (userInfo) {
@@ -51,7 +50,13 @@ router.post("/login", async (req, res) => {
       const accessToken = generateAccessToken({ user: req.body.name });
       const refreshToken = generateRefreshToken({ user: req.body.name });
 
-      res.json({email:email, accessToken: accessToken, refreshToken: refreshToken });
+      res.json({
+        email: email,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      });
+    } else {
+      res.status(404).json("password incorrect!");
     }
   } else res.status(404).json({ error: "user not found" });
 });
