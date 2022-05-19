@@ -17,7 +17,7 @@ router.get("/layer-1", ensureLogin, async (req, res) => {
   const treated = req.body.treated;
   const email = req.body.email;
 
-  const user = userController.findUser({ email: email });
+  const user = await userController.findUser({ email: email });
   if (user.layer1) {
     res.status(200).json({ score: user.layer1 });
   } else {
@@ -38,7 +38,7 @@ router.get("/layer-2", ensureLogin, async (req, res) => {
   const treated = req.body.treated;
   const email = req.body.email;
 
-  const user = userController.findUser({ email: email });
+  const user = await userController.findUser({ email: email });
   if (user.layer2) {
     res.status(200).json({ score: user.layer2 });
   } else {
@@ -59,7 +59,11 @@ router.get("/layer-3", ensureLogin, async (req, res) => {
   const treated = req.body.treated;
   const email = req.body.email;
 
-  const user = userController.findUser({ email: email });
+  const user = await userController.findUser({ email: email });
+  console.log(user);
+  console.log("layer 3 val is ");
+  console.log(user.layer3);
+
   if (user.layer3) {
     res.status(200).json({ score: user.layer3 });
   } else {
