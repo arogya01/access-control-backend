@@ -35,7 +35,7 @@ module.exports.findUser = async function findUser(user) {
 
 module.exports.generateAccessToken = function generateAccessToken(user) {
   console.log(process.env.SECRET_KEY_ACCESS);
-  return jwt.sign(user, process.env.SECRET_KEY_ACCESS, { expiresIn: "15m" });
+  return jwt.sign(user, process.env.SECRET_KEY_ACCESS);
 };
 
 module.exports.generateRefreshToken = function generateRefreshToken(user) {
