@@ -27,6 +27,9 @@ router.post("/signup", async (req, res) => {
       name: name,
       password: password,
       isAdmin: isAdmin,
+      layer1: "",
+      layer2: "",
+      layer3: "",
     },
     res
   );
@@ -51,7 +54,8 @@ router.post("/login", async (req, res) => {
       const refreshToken = generateRefreshToken({ user: req.body.name });
 
       res.json({
-        email: email,
+        name: userInfo.name,
+        email: userInfo.email,
         accessToken: accessToken,
         refreshToken: refreshToken,
       });

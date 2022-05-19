@@ -14,9 +14,8 @@ module.exports = function ensureLogin(req, res, next) {
     if (err) {
       return res.status(401).json({ error: "you must be logged in" });
     }
-
-    const { email } = payload;
-
+    const { email } = req.body;
+    console.log(email);
     const result = userController.findUser({ email: email });
     req.user = { result };
     next();
