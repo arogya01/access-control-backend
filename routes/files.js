@@ -33,9 +33,6 @@ router.get("/layer-1", ensureLogin, async (req, res) => {
 });
 
 router.get("/layer-2", ensureLogin, async (req, res) => {
-  const role = req.body.role;
-  const exp = req.body.exp;
-  const treated = req.body.treated;
   const email = req.body.email;
 
   const user = await userController.findUser({ email: email });
