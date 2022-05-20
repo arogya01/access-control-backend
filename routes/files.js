@@ -41,6 +41,7 @@ router.post("/layer-2", ensureLogin, async (req, res) => {
   const treated = req.body.treated;
   const email = req.body.email;
   const criminalRecord = req.body.criminalRecord;
+
   const user = await userController.findUser({ email: email });
 
   if (criminalRecord === "yes" || exp < 5 || role === "receptionist") {
@@ -64,7 +65,8 @@ router.post("/layer-3", ensureLogin, async (req, res) => {
   const exp = req.body.exp;
   const treated = req.body.treated;
   const email = req.body.email;
-  console.log(email);
+  const criminalRecord = req.body.criminalRecord;
+  console.log(email, treated, criminalRecord);
   const user = await userController.findUser({ email: email });
   console.log(user);
   console.log("layer 3 val is ");
