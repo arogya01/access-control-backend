@@ -15,10 +15,13 @@ router.post("/layer-1", ensureLogin, async (req, res) => {
   const role = req.body.role;
   const exp = req.body.exp;
   const treated = req.body.treated;
+  const criminalRecord = req.body.criminalRecord;
   const email = req.body.email;
-
   const user = await userController.findUser({ email: email });
-  if (user.layer1) {
+
+  if (criminalRecord === "yes") {
+    res.status(200).json({ score: 2 });
+  } else if (user.layer1) {
     res.status(200).json({ score: user.layer1 });
   } else {
     const result = Math.floor(Math.random() * 11);
@@ -33,10 +36,16 @@ router.post("/layer-1", ensureLogin, async (req, res) => {
 });
 
 router.post("/layer-2", ensureLogin, async (req, res) => {
+  const role = req.body.role;
+  const exp = req.body.exp;
+  const treated = req.body.treated;
   const email = req.body.email;
-
+  const criminalRecord = req.body.criminalRecord;
   const user = await userController.findUser({ email: email });
-  if (user.layer2) {
+
+  if (criminalRecord === "yes" || exp < 5 || role === "receptionist") {
+    res.status(200).json({ score: 2 });
+  } else if (user.layer2) {
     res.status(200).json({ score: user.layer2 });
   } else {
     const result = Math.floor(Math.random() * 11);
@@ -61,7 +70,9 @@ router.post("/layer-3", ensureLogin, async (req, res) => {
   console.log("layer 3 val is ");
   console.log(user.layer3);
 
-  if (user?.layer3) {
+  if (criminalRecord === "yes" || exp < 7 || role === "receptionist") {
+    res.status(200).json({ score: 2 });
+  } else if (user?.layer3) {
     res.status(200).json({ score: user.layer3 });
   } else {
     const result = Math.floor(Math.random() * 11);
