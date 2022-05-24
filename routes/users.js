@@ -4,12 +4,46 @@ const dbConnect = require("../database/config");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userControllers = require("../controllers/users");
+const ensureLogin = require("../middleware/ensureLogin");
 require("dotenv").config();
 
 const { createUser, findUser, generateAccessToken, generateRefreshToken } =
   userControllers;
 
 let refreshTokens = [];
+
+router.get("/profile",ensureLogin, (req,res)=>{
+const email = req.body.email; 
+
+const userInfo = await userControllers.findUser({ email: email });
+
+ if(userInfo){
+   res.status(200).send(userInfo);
+ }
+ else{
+   res.status(403).json({message:"invalid email"});
+   
+ }
+});
+
+router.post("/profile",(req,res)=>{
+  const email = req.body.email; 
+  const criminalRecord = req.body.criminalRecord; 
+  const age = req.body.age; 
+  
+  const userInfo = await userControllers.findUser({ email: email });
+ 
+  if(userInfo){
+    const updatedUserInfo =   await client
+         .db("access")
+         .collection("users")
+         .updateOne({ email: email }, { $set: { criminalRecord:criminalRecord, age:age } });
+
+    res.status(200).json({updatedUserInfo:updatedUserInfo});
+  }
+
+  
+});
 
 router.post("/signup", async (req, res) => {
   const saltRounds = 10;
