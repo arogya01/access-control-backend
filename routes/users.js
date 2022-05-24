@@ -12,37 +12,36 @@ const { createUser, findUser, generateAccessToken, generateRefreshToken } =
 
 let refreshTokens = [];
 
-router.get("/profile",ensureLogin, (req,res)=>{
-const email = req.body.email; 
+router.get("/profile", ensureLogin, async (req, res) => {
+  const email = req.body.email;
 
-const userInfo = await userControllers.findUser({ email: email });
+  const userInfo = await userControllers.findUser({ email: email });
 
- if(userInfo){
-   res.status(200).send(userInfo);
- }
- else{
-   res.status(403).json({message:"invalid email"});
-   
- }
+  if (userInfo) {
+    res.status(200).send(userInfo);
+  } else {
+    res.status(403).json({ message: "invalid email" });
+  }
 });
 
-router.post("/profile",(req,res)=>{
-  const email = req.body.email; 
-  const criminalRecord = req.body.criminalRecord; 
-  const age = req.body.age; 
-  
+router.post("/profile", async (req, res) => {
+  const email = req.body.email;
+  const criminalRecord = req.body.criminalRecord;
+  const age = req.body.age;
+
   const userInfo = await userControllers.findUser({ email: email });
- 
-  if(userInfo){
-    const updatedUserInfo =   await client
-         .db("access")
-         .collection("users")
-         .updateOne({ email: email }, { $set: { criminalRecord:criminalRecord, age:age } });
 
-    res.status(200).json({updatedUserInfo:updatedUserInfo});
+  if (userInfo) {
+    const updatedUserInfo = await client
+      .db("access")
+      .collection("users")
+      .updateOne(
+        { email: email },
+        { $set: { criminalRecord: criminalRecord, age: age } }
+      );
+
+    res.status(200).json({ updatedUserInfo: updatedUserInfo });
   }
-
-  
 });
 
 router.post("/signup", async (req, res) => {
