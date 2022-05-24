@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const userControllers = require("../controllers/users");
 const ensureLogin = require("../middleware/ensureLogin");
 require("dotenv").config();
+const { client } = dbConnect;
 
 const { createUser, findUser, generateAccessToken, generateRefreshToken } =
   userControllers;
@@ -40,7 +41,12 @@ router.post("/profile", async (req, res) => {
         { $set: { criminalRecord: criminalRecord, age: age } }
       );
 
-    res.status(200).json({ updatedUserInfo: updatedUserInfo });
+    res.status(200).json({
+      name: userInfo.name,
+      email: userInfo.email,
+      criminalRecord: userInfo.criminalRecord ? userInfo.criminalRecord : null,
+      age: userInfo.age ? userInfo.age : null,
+    });
   }
 });
 
@@ -89,6 +95,10 @@ router.post("/login", async (req, res) => {
       res.json({
         name: userInfo.name,
         email: userInfo.email,
+        criminalRecord: userInfo.criminalRecord
+          ? userInfo.criminalRecord
+          : null,
+        age: userInfo.age ? userInfo.age : null,
         accessToken: accessToken,
         refreshToken: refreshToken,
       });
