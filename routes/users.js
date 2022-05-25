@@ -32,7 +32,7 @@ router.post("/profile", async (req, res) => {
 
   const userInfo = await userControllers.findUser({ email: email });
 
-  if (userInfo) {
+  if (userInfo.criminalRecord === null && userInfo.age === null) {
     const updatedUserInfo = await client
       .db("access")
       .collection("users")
@@ -44,8 +44,15 @@ router.post("/profile", async (req, res) => {
     res.status(200).json({
       name: userInfo.name,
       email: userInfo.email,
-      criminalRecord: userInfo.criminalRecord ? userInfo.criminalRecord : null,
-      age: userInfo.age ? userInfo.age : null,
+      criminalRecord: userInfo.criminalRecord,
+      age: userInfo.age,
+    });
+  } else {
+    res.status(200).json({
+      name: userInfo.name,
+      email: userInfo.email,
+      criminalRecord: userInfo.criminalRecord,
+      age: userInfo.age,
     });
   }
 });
