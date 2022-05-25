@@ -32,7 +32,7 @@ router.post("/profile", async (req, res) => {
 
   const userInfo = await userControllers.findUser({ email: email });
 
-  if (!userInfo.criminalRecord && !userInfo.age) {
+  if (userInfo.criminalRecord === undefined && userInfo.age === undefined) {
     const updatedUserInfo = await client
       .db("access")
       .collection("users")
