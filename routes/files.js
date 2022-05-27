@@ -19,18 +19,20 @@ router.post("/layer-1", ensureLogin, async (req, res) => {
   const email = req.body.email;
   const user = await userController.findUser({ email: email });
 
-  if (user.layer1) {
-    res.status(200).json({ score: user.layer1 });
-  } else {
-    const result = Math.floor(Math.random() * 11);
-    const score = await client
-      .db("access")
-      .collection("users")
-      .updateOne({ email: email }, { $set: { layer1: result } });
+  const result = 7;
+  res.status(200).json({ score: result });
+  // if (user.layer1) {
+  //   res.status(200).json({ score: user.layer1 });
+  // } else {
+  //   const result = Math.floor(Math.random() * 11);
+  //   const score = await client
+  //     .db("access")
+  //     .collection("users")
+  //     .updateOne({ email: email }, { $set: { layer1: result } });
 
-    console.log(user);
-    res.status(200).json({ score: result });
-  }
+  //   console.log(user);
+  //   res.status(200).json({ score: result });
+  // }
 });
 
 router.post("/layer-2", ensureLogin, async (req, res) => {
@@ -42,7 +44,7 @@ router.post("/layer-2", ensureLogin, async (req, res) => {
 
   const user = await userController.findUser({ email: email });
 
-  if (exp > 5) {
+  if (exp > 5 && role !== "nurse-manager" && role !== "nurse") {
     res.status(200).json({ score: 7 });
   } else if (user.layer2) {
     res.status(200).json({ score: user.layer2 });
@@ -67,10 +69,11 @@ router.post("/layer-3", ensureLogin, async (req, res) => {
   console.log(email, treated, criminalRecord);
   const user = await userController.findUser({ email: email });
   console.log(user);
+  console.log(role);
   console.log("layer 3 val is ");
   console.log(user.layer3);
 
-  if (exp > 7) {
+  if (exp > 7 && role !== "nurse-manager" && role !== "nurse") {
     res.status(200).json({ score: 8 });
   } else if (user?.layer3) {
     res.status(200).json({ score: user.layer3 });
