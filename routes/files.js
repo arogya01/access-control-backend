@@ -49,7 +49,7 @@ router.post("/layer-2", ensureLogin, async (req, res) => {
   } else if (user.layer2) {
     res.status(200).json({ score: user.layer2 });
   } else {
-    const result = Math.floor(Math.random() * 11);
+    const result = Math.floor(Math.random() * 5 + 1);
     const score = await client
       .db("access")
       .collection("users")
@@ -78,7 +78,7 @@ router.post("/layer-3", ensureLogin, async (req, res) => {
   } else if (user?.layer3) {
     res.status(200).json({ score: user.layer3 });
   } else {
-    const result = Math.floor(Math.random() * 11);
+    const result = Math.floor(Math.random() * 5 + 1);
     const score = await client
       .db("access")
       .collection("users")
