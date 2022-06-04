@@ -112,7 +112,7 @@ router.post("/login", async (req, res) => {
     } else {
       res.status(400).send(new Error("incorrect password!!"));
     }
-  } else res.status(404).json({ error: "user not found" });
+  } else res.status(404).send(new Error("user not found"));
 });
 
 router.post("/refreshToken", (req, res) => {
